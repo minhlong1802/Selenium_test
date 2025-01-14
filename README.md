@@ -93,7 +93,7 @@ selenium_test/
 - Adjust waiting times in the `WebDriverWait` if tests fail due to timing issues.
 
 ## Output
-![image](https://github.com/user-attachments/assets/e83b4a06-89ae-46d6-8e58-0f23d2ee3568)
+![image](https://github.com/user-attachments/assets/f8a722b6-05f6-412b-8f9e-5fcfe92e4ac6)
 
 
 ## Reference
