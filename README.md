@@ -1,91 +1,110 @@
-# Selenium Test Project
+# Selenium Test Repository
 
-This repository contains a Selenium-based automation project for testing the login functionality of a website. The project is written in Java and uses ChromeDriver to interact with Google Chrome.
+This repository contains Selenium-based test scripts to automate and validate login functionality on the Facebook website. The tests cover various scenarios, including successful login, incorrect credentials, and two-step verification handling.
+
+## Features
+- Automates login functionality on Facebook.
+- Covers multiple test cases:
+  - Successful login.
+  - Non-existent account login.
+  - Incorrect password login.
+  - Empty fields.
+  - Invalid email format.
+- Handles two-step verification scenarios.
 
 ## Prerequisites
-
-Ensure you have the following installed before running the project:
-
-1. **Java Development Kit (JDK)**: Version 8 or later.
-2. **Maven**: For dependency management.
-3. **Google Chrome**: Ensure the browser is installed and updated.
-4. **ChromeDriver**: Ensure it matches your Chrome browser version. Download from [ChromeDriver](https://chromedriver.chromium.org/downloads).
-5. **IDE**: IntelliJ IDEA, Eclipse, or any preferred Java IDE.
-
-## Project Setup
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd Selenium_test
-   ```
-
-2. Add the Selenium dependency to your `pom.xml` file:
+1. Install Java (version 8 or higher).
+2. Install Maven for dependency management.
+3. Add the following dependencies in your `pom.xml`:
    ```xml
-   <dependency>
-       <groupId>org.seleniumhq.selenium</groupId>
-       <artifactId>selenium-java</artifactId>
-       <version>4.7.2</version>
-   </dependency>
+   <dependencies>
+       <dependency>
+           <groupId>org.seleniumhq.selenium</groupId>
+           <artifactId>selenium-java</artifactId>
+           <version>4.x.x</version>
+       </dependency>
+   </dependencies>
    ```
+4. Install a WebDriver for your browser (e.g., ChromeDriver for Google Chrome).
+5. Add the WebDriver to your system path.
 
-3. Download ChromeDriver:
-   - Download the appropriate version from [ChromeDriver](https://chromedriver.chromium.org/downloads).
-   - Place the `chromedriver.exe` file in a known location (e.g., `D:\chromedriver-win64\`).
-
-4. Update the path to ChromeDriver in the code:
-   ```java
-   System.setProperty("webdriver.chrome.driver", "path\to\chromedriver.exe");
-   ```
-
-## Running the Tests
-
-1. Open the project in your preferred IDE.
-2. Run the `LoginTest.java` file to execute the test cases.
-
-### Test Cases
-
-The following test cases are implemented:
-
-1. **Valid Login**: Ensures successful login with correct credentials.
-2. **Invalid Username**: Verifies the system's response to an incorrect username.
-3. **Invalid Password**: Checks the behavior with a wrong password.
-4. **Invalid Username and Password**: Tests the scenario where both username and password are incorrect.
-5. **Empty Username**: Ensures validation messages appear for an empty username field.
-6. **Empty Password**: Ensures validation messages appear for an empty password field.
-7. **Both Fields Empty**: Verifies validation messages when both fields are left empty.
-
-### Expected Results
-
-- **Successful Login**: User is redirected to `https://qlbh.ric.vn/`.
-- **Failed Login**: Error messages appear on invalid inputs or empty fields.
-
-## Sample Code
-
-```java
-WebElement usernameField = driver.findElement(By.id("txtuid"));
-usernameField.sendKeys("valid_username");
-
-WebElement passwordField = driver.findElement(By.id("txtpwd"));
-passwordField.sendKeys("svalid_password");
-
-WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"cmdlogin\"]"));
-loginButton.click();
+## Directory Structure
+```plaintext
+selenium_test/
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── org/
+│   │           └── example/
+│   │               ├── utils/
+│   │               │   └── DriverSetup.java
+│   │               └── LoginTest.java
+├── pom.xml
+└── README.md
 ```
 
-## Troubleshooting
+## Setup Instructions
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/minhlong1802/Selenium_test.git
+   ```
+2. Open the project in your favorite IDE (e.g., IntelliJ IDEA or Eclipse).
+3. Add the WebDriver to your system path or specify its path in the `DriverSetup` class.
+4. Update the test credentials in `LoginTest.java` with valid or invalid credentials for testing purposes.
 
-1. **WebDriverException**: Ensure ChromeDriver version matches your Chrome browser.
-2. **TimeoutException**: Check your internet connection or increase the `WebDriverWait` timeout.
-3. **ElementNotFoundException**: Verify the `id` or `xpath` of the web elements.
+## How to Run
+1. Build the project using Maven:
+   ```bash
+   mvn clean install
+   ```
+2. Run the `LoginTest` class from your IDE or using the command line:
+   ```bash
+   mvn exec:java -Dexec.mainClass="org.example.LoginTest"
+   ```
+
+## Test Scenarios
+
+### Test Case 1: Successful Login
+- **Steps:** Provide valid email and password.
+- **Expected Result:** Navigates to Facebook home page.
+
+### Test Case 2: Non-existent Account
+- **Steps:** Provide a non-existent email and any password.
+- **Expected Result:** Displays an error message indicating invalid credentials.
+
+### Test Case 3: Incorrect Password
+- **Steps:** Provide a valid email with an incorrect password.
+- **Expected Result:** Displays an error message indicating incorrect password.
+
+### Test Case 4: Empty Fields
+- **Steps:** Leave the email and password fields blank.
+- **Expected Result:** Displays an error message indicating required fields.
+
+### Test Case 5: Invalid Email Format
+- **Steps:** Provide an invalid email format (e.g., `invalidemail`) and any password.
+- **Expected Result:** Displays an error message indicating invalid email format.
+
+### Handling Two-Step Verification
+- **Steps:** Provide valid email and password for an account with two-step verification enabled.
+- **Expected Result:** Navigates to `facebook.com/two_step_verification`.
+
+## Notes
+- Ensure your WebDriver version matches your browser version.
+- Adjust waiting times in the `WebDriverWait` if tests fail due to timing issues.
+
+## Output
+![image](https://github.com/user-attachments/assets/e83b4a06-89ae-46d6-8e58-0f23d2ee3568)
+
 
 ## Reference
-[Click here](https://chatgpt.com/share/67855269-e838-8000-8889-b73e42e8c793)
+[Click here](https://chatgpt.com/share/678539b2-1a00-8013-9e0d-4beecc549266)
+
+## Contributions
+Feel free to fork this repository and submit pull requests for enhancements or bug fixes. Ensure all test cases pass before submitting.
 
 ## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+## Contact
+For issues or questions, please reach out to [your-email@example.com].
 
-## Contribution
-
-Feel free to open issues or submit pull requests to improve this project.
