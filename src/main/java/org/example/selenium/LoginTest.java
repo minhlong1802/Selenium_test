@@ -98,6 +98,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class LoginTest {
     public static void main(String[] args) {
@@ -147,28 +148,26 @@ public class LoginTest {
             // Nhấn nút đăng nhập
             loginButton.click();
 
-            // Sử dụng WebDriverWait để kiểm tra sự xuất hiện của phần tử sau khi đăng nhập
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Thời gian chờ tối đa là 10 giây
+            // Sử dụng WebDriverWait để kiểm tra URL
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.urlContains("facebook.com"));
 
-            try {
-                // Chờ URL thay đổi sau khi đăng nhập
-                wait.until(ExpectedConditions.urlContains("facebook.com"));
+            // Kiểm tra URL sau khi đăng nhập
+            String currentUrl = driver.getCurrentUrl();
 
-                // Lấy URL hiện tại
-                String currentUrl = driver.getCurrentUrl();
-
-                if (currentUrl.contains("facebook.com/two_step_verification")) {
-                    System.out.println("Đăng nhập thành công nhưng cần xác minh hai bước với email: " + email);
-                } else if (currentUrl.equals("https://www.facebook.com/")) {
-                    System.out.println("Đăng nhập thành công và chuyển đến trang chủ với email: " + email);
-                } else {
+            if (currentUrl.contains("facebook.com/two_step_verification")) {
+                System.out.println("Đăng nhập thành công nhưng cần xác minh hai bước với email: " + email);
+            } else if (currentUrl.equals("https://www.facebook.com/")) {
+                System.out.println("Đăng nhập thành công và chuyển đến trang chủ với email: " + email);
+            } else {
+                // Kiểm tra sự tồn tại của thông báo lỗi
+                List<WebElement> errorMessages = driver.findElements(By.xpath("//div[contains(@class, '_9ay7')]"));
+                if (!errorMessages.isEmpty()) {
                     System.out.println("Đăng nhập thất bại với email: " + email);
+                    System.out.println("Thông báo lỗi: " + errorMessages.get(0).getText());
+                } else {
+                    System.out.println("Đăng nhập thất bại với email: " + email + " nhưng không tìm thấy thông báo lỗi.");
                 }
-            } catch (Exception e) {
-                // Xử lý nếu không tìm thấy phần tử (đăng nhập thất bại)
-                WebElement errorMessage = driver.findElement(By.xpath("//div[contains(@class, '_9ay7')]"));
-                System.out.println("Đăng nhập thất bại với email: " + email);
-                System.out.println("Thông báo lỗi: " + errorMessage.getText());
             }
         } catch (Exception e) {
             System.out.println("Lỗi trong quá trình kiểm thử: " + e.getMessage());
