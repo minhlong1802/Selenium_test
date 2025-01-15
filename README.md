@@ -10,7 +10,6 @@ This repository contains Selenium-based test scripts to automate and validate lo
   - Incorrect password login.
   - Empty fields.
   - Invalid email format.
-- Handles two-step verification scenarios.
 
 ## Prerequisites
 1. Install Java (version 8 or higher).
@@ -21,7 +20,7 @@ This repository contains Selenium-based test scripts to automate and validate lo
        <dependency>
            <groupId>org.seleniumhq.selenium</groupId>
            <artifactId>selenium-java</artifactId>
-           <version>4.x.x</version>
+           <version>4.5.0</version>
        </dependency>
    </dependencies>
    ```
@@ -83,10 +82,6 @@ selenium_test/
 ### Test Case 5: Invalid Email Format
 - **Steps:** Provide an invalid email format (e.g., `invalidemail`) and any password.
 - **Expected Result:** Displays an error message indicating invalid email format.
-
-### Handling Two-Step Verification
-- **Steps:** Provide valid email and password for an account with two-step verification enabled.
-- **Expected Result:** Navigates to `facebook.com/two_step_verification`.
 
 ## Notes
 - Ensure your WebDriver version matches your browser version.
