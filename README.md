@@ -51,10 +51,6 @@ selenium_test/
 3. Add the WebDriver to your system path or specify its path in the `DriverSetup` class.
 4. Update the test credentials in `LoginTest.java` with valid or invalid credentials for testing purposes.
 
-Để thêm hướng dẫn cách chạy kiểm thử vào file `README.md` của bạn, bạn có thể cập nhật phần **How to Run** với các bước chi tiết như sau:
-
----
-
 ## How to Run
 
 ### 1. Build Project
@@ -112,6 +108,14 @@ Nếu các bài kiểm thử bị lỗi do vấn đề thời gian tải trang h
 ## Notes
 - Ensure your WebDriver version matches your browser version.
 - Adjust waiting times in the `WebDriverWait` if tests fail due to timing issues.
+## Exception Handling
+The test script includes exception handling to capture errors during the login tests. If any exception occurs while interacting with the web elements, the script will log the error message and take a screenshot for further analysis. This helps in identifying issues such as:
+
+Element not found.
+Timeout exceptions when waiting for page elements.
+Any unexpected issues during execution.
+Exception Screenshot
+If an exception occurs, a screenshot is saved with the name exception_screenshot_<timestamp>.png in the project directory.
 
 ## Output
 ![image](https://github.com/user-attachments/assets/f8a722b6-05f6-412b-8f9e-5fcfe92e4ac6)
