@@ -51,35 +51,27 @@ selenium_test/
 3. Add the WebDriver to your system path or specify its path in the `DriverSetup` class.
 4. Update the test credentials in `LoginTest.java` with valid or invalid credentials for testing purposes.
 
+
 ## How to Run
 
 ### 1. Build Project
-Trước tiên, bạn cần xây dựng dự án sử dụng Maven:
-
 ```bash
 mvn clean install
 ```
 
-Lệnh này sẽ tải về tất cả các phụ thuộc được khai báo trong `pom.xml` và biên dịch mã nguồn của bạn.
+### 2. Run Tests from IDE
+Run the `LoginTest.java` as a Java application.
 
-### 2. Chạy Kiểm Thử Từ IDE
-- Mở dự án trong IDE yêu thích của bạn (ví dụ: IntelliJ IDEA hoặc Eclipse).
-- Tìm và chạy lớp `LoginTest.java`. Bạn có thể chạy nó như một ứng dụng Java thông thường từ IDE.
-
-### 3. Chạy Kiểm Thử Từ Dòng Lệnh
-Nếu bạn muốn chạy kiểm thử từ dòng lệnh, bạn có thể sử dụng lệnh sau:
-
+### 3. Run Tests from Command Line
 ```bash
 mvn exec:java -Dexec.mainClass="org.example.LoginTest"
 ```
 
-Lệnh này sẽ chạy lớp `LoginTest` từ dòng lệnh.
+### 4. Check Results
+Test results will be displayed in the IDE or command line.
 
-### 4. Kiểm Tra Kết Quả
-Sau khi chạy kiểm thử, các kết quả sẽ được hiển thị trong bảng điều khiển của IDE hoặc trong dòng lệnh. Nếu các bài kiểm thử thành công, bạn sẽ thấy thông báo xác nhận. Nếu có lỗi, các thông báo lỗi sẽ được ghi lại, và bạn có thể cần kiểm tra lại các bước cài đặt hoặc mã nguồn của mình.
-
-### 5. Điều Chỉnh Thời Gian Chờ
-Nếu các bài kiểm thử bị lỗi do vấn đề thời gian tải trang hoặc đồng bộ, bạn có thể điều chỉnh thời gian chờ trong lớp `DriverSetup.java` hoặc sử dụng `WebDriverWait` để đảm bảo rằng các phần tử đã sẵn sàng trước khi thực hiện các thao tác.
+### 5. Adjust Wait Time
+You may adjust the `WebDriverWait` if tests fail due to timing issues.
 
 ---
 
