@@ -29,17 +29,20 @@ This repository contains Selenium-based test scripts to automate and validate lo
 
 ## Directory Structure
 ```plaintext
-selenium_test/
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── org/
-│   │           └── example/
-│   │               ├── utils/
-│   │               │   └── DriverSetup.java
-│   │               └── LoginTest.java
-├── pom.xml
-└── README.md
+src/
+│
+├── main/
+│   ├── java/
+│   │   ├── org/
+│   │   │   ├── example/
+│   │   │   │   ├── selenium/
+│   │   │   │   │   ├── pages/
+│   │   │   │   │   │   ├── LoginPage.java
+│   │   │   │   │   │   └── HomePage.java
+│   │   │   │   │   └── LoginTest.java
+│   │   │   │   └── utils/
+│   │   │   │       └── DriverSetup.java
+
 ```
 
 ## Setup Instructions
