@@ -1,177 +1,127 @@
 package org.example.selenium;
 
-//import org.openqa.selenium.By;
-//import org.openqa.selenium.WebDriver;
-//import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.chrome.ChromeOptions;
-//import org.openqa.selenium.support.ui.ExpectedConditions;
-//import org.openqa.selenium.support.ui.WebDriverWait;
-//
-//import java.time.Duration;
-//
-//public class LoginTest {
-//    public static void main(String[] args) {
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--remote-allow-origins=*");
-//        System.setProperty("webdriver.chrome.driver", "D:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
-//
-//        WebDriver driver = new ChromeDriver(options);
-//
-//        try {
-//            driver.get("https://qlbh.ric.vn/Login");
-//
-//            // Test cases
-//            testLogin(driver, "wrongemail@gmail.com", "sinh viên", "invalid");            // Wrong username
-//            testLogin(driver, "sinhvien@gmail.com", "wrongpassword", "invalid");          // Wrong password
-//            testLogin(driver, "wrongemail@gmail.com", "wrongpassword", "invalid");        // Both wrong
-//            testLogin(driver, "", "sinh viên", "empty");                                  // Empty username
-//            testLogin(driver, "sinhvien@gmail.com", "", "empty");                         // Empty password
-//            testLogin(driver, "", "", "empty");                                           // Both fields empty
-//            testLogin(driver, "sinhvien@gmail.com", "sinh viên", "https://qlbh.ric.vn/"); // Correct credentials
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            driver.quit();
-//        }
-//    }
-//
-//    private static void testLogin(WebDriver driver, String username, String password, String expected) {
-//        try {
-//            // Reload the login page
-//            driver.get("https://qlbh.ric.vn/Login");
-//
-//            // Find and clear username and password fields
-//            WebElement usernameField = driver.findElement(By.id("txtuid"));
-//            WebElement passwordField = driver.findElement(By.id("txtpwd"));
-//            usernameField.clear();
-//            passwordField.clear();
-//
-//            // Input test credentials
-//            usernameField.sendKeys(username);
-//            passwordField.sendKeys(password);
-//
-//            // Click login button
-//            WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"cmdlogin\"]"));
-//            loginButton.click();
-//
-//            // Wait for potential navigation or error messages
-//            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-//            if (expected.equals("https://qlbh.ric.vn/")) {
-//                wait.until(ExpectedConditions.urlToBe(expected));
-//                String currentUrl = driver.getCurrentUrl();
-//                if (currentUrl.equals(expected)) {
-//                    System.out.println("Test Passed: Login successful with username '" + username + "' and password '" + password + "'");
-//                } else {
-//                    System.out.println("Test Failed: Expected redirection to homepage, but got: " + currentUrl);
-//                }
-//            } else if (expected.equals("invalid")) {
-//                // Check for error message
-//                WebElement errorMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginError"))); // Adjust locator
-//                if (errorMsg.isDisplayed()) {
-//                    System.out.println("Test Passed: Login failed as expected with username '" + username + "' and password '" + password + "'");
-//                } else {
-//                    System.out.println("Test Failed: No error message for invalid login credentials.");
-//                }
-//            } else if (expected.equals("empty")) {
-//                // Check for validation message
-//                WebElement validationMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("fieldError"))); // Adjust locator
-//                if (validationMsg.isDisplayed()) {
-//                    System.out.println("Test Passed: Validation error displayed for empty fields.");
-//                } else {
-//                    System.out.println("Test Failed: No validation message for empty fields.");
-//                }
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Exception occurred during test with username '" + username + "' and password '" + password + "'");
-//            e.printStackTrace();
-//        }
-//    }
-//}
-
 import org.example.ultils.DriverSetup;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class LoginTest {
     public static void main(String[] args) {
-        // Khởi tạo WebDriver
+        // Initialize WebDriver
         WebDriver driver = DriverSetup.getDriver();
 
         try {
-            // Mở trang Facebook
+            // Open Facebook page
             driver.get("https://www.facebook.com");
-            System.out.println("Mở trang Facebook thành công.");
+            System.out.println("Opened Facebook page successfully.");
 
-            // Test Case 2: Tài khoản không tồn tại
+            // Test Case 2: Non-existent account
             loginTest(driver, "nonexistent_email@gmail.com", "any_password");
 
-            // Test Case 3: Sai mật khẩu
+            // Test Case 3: Wrong password
             loginTest(driver, "example@gmail.com", "wrong_password");
 
-            // Test Case 4: Bỏ trống các trường
+            // Test Case 4: Empty fields
             loginTest(driver, "", "");
 
-            // Test Case 5: Email không hợp lệ
+            // Test Case 5: Invalid email format
             loginTest(driver, "invalidemail", "password123");
 
-            // Test Case 1: Đăng nhập thành công
+            // Test Case 1: Successful login
             loginTest(driver, "nguyenlongdang76@gmail.com", "nguyenlong");
 
         } finally {
-            // Đóng trình duyệt
+            // Close the browser
             driver.quit();
         }
     }
 
-    // Hàm kiểm thử đăng nhập
+    // Login test function
     public static void loginTest(WebDriver driver, String email, String password) {
         try {
-            // Tìm các trường nhập liệu
-            WebElement emailField = driver.findElement(By.id("email"));
-            WebElement passwordField = driver.findElement(By.id("pass"));
-            WebElement loginButton = driver.findElement(By.name("login"));
+            // Find input fields using CSS selectors
+            WebElement emailField = driver.findElement(By.cssSelector("#email"));
+            WebElement passwordField = driver.findElement(By.cssSelector("#pass"));
+            WebElement loginButton = driver.findElement(By.cssSelector("button[name='login']"));
 
-            // Nhập thông tin
+            // Enter credentials
             emailField.clear();
             emailField.sendKeys(email);
             passwordField.clear();
             passwordField.sendKeys(password);
 
-            // Nhấn nút đăng nhập
+            // Click login button
             loginButton.click();
 
-            // Sử dụng WebDriverWait để kiểm tra URL
+            // Use WebDriverWait to check URL and UI state
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.urlContains("facebook.com"));
+            wait.until(ExpectedConditions.or(
+                    ExpectedConditions.urlContains("facebook.com"),
+                    ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div._9ay7"))
+            ));
 
-            // Kiểm tra URL sau khi đăng nhập
+            // Check URL after login
             String currentUrl = driver.getCurrentUrl();
 
             if (currentUrl.contains("facebook.com/two_step_verification")) {
-                System.out.println("Đăng nhập thành công nhưng cần xác minh hai bước với email: " + email);
+                System.out.println("Login successful but requires two-step verification with email: " + email);
             } else if (currentUrl.equals("https://www.facebook.com/")) {
-                System.out.println("Đăng nhập thành công và chuyển đến trang chủ với email: " + email);
-            } else {
-                // Kiểm tra sự tồn tại của thông báo lỗi
-                List<WebElement> errorMessages = driver.findElements(By.xpath("//div[contains(@class, '_9ay7')]"));
-                if (!errorMessages.isEmpty()) {
-                    System.out.println("Đăng nhập thất bại với email: " + email);
-                    System.out.println("Thông báo lỗi: " + errorMessages.get(0).getText());
+                // Verify user-specific elements
+                WebElement avatar = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img.avatar")));
+                WebElement username = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.username")));
+                if (avatar.isDisplayed() && username.isDisplayed()) {
+                    System.out.println("Login successful and redirected to homepage with email: " + email);
                 } else {
-                    System.out.println("Đăng nhập thất bại với email: " + email + " nhưng không tìm thấy thông báo lỗi.");
+                    System.out.println("Login successful but user-specific elements not found with email: " + email);
+                }
+            } else {
+                // Check for error messages
+                List<WebElement> errorMessages = driver.findElements(By.cssSelector("div._9ay7"));
+                if (!errorMessages.isEmpty()) {
+                    System.out.println("Login failed with email: " + email);
+                    System.out.println("Error message: " + errorMessages.get(0).getText());
+                    // Close error message
+                    WebElement closeButton = errorMessages.get(0).findElement(By.cssSelector("button.close"));
+                    if (closeButton != null) {
+                        closeButton.click();
+                    }
+                    // Take a screenshot
+                    takeScreenshot(driver, "error_screenshot");
+                } else {
+                    System.out.println("Login failed with email: " + email + " but no error message found.");
                 }
             }
         } catch (Exception e) {
-            System.out.println("Lỗi trong quá trình kiểm thử: " + e.getMessage());
+            System.out.println("Error during test with email: " + email + " and password: " + password);
+            e.printStackTrace();
+            // Take a screenshot
+            takeScreenshot(driver, "exception_screenshot");
+        }
+    }
+
+    // Function to take a screenshot
+    public static void takeScreenshot(WebDriver driver, String baseFileName) {
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String filePath = baseFileName + "_" + timestamp + ".png";
+        try {
+            Files.copy(screenshot.toPath(), Paths.get(filePath));
+            System.out.println("Screenshot saved to: " + filePath);
+        } catch (IOException e) {
+            System.out.println("Failed to save screenshot: " + e.getMessage());
         }
     }
 }
-
